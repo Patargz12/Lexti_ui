@@ -1,0 +1,189 @@
+# Cursor AI Instructions for React + Vite + ShadCN Boilerplate
+
+This file provides specific guidance for Cursor AI when working with this codebase. Follow these instructions when suggesting code, making edits, or providing recommendations.
+
+## Technology Stack
+
+MAKE SURE TO USE "YARN" FOR INSTALLING PACKAGES AND ETC. 
+
+This project uses:
+- React 18 with TypeScript 5
+- Vite 5 for build tooling
+- Redux Toolkit for state management
+- TanStack Query v5 for data fetching
+- Tailwind CSS 3 with ShadCN/UI components
+- React Router 6 for routing
+- Axios for HTTP requests
+
+## Code Style & Architecture
+
+### Component Standards
+- Use functional components exclusively with React hooks
+- Create pure components that minimize side effects
+- Extract reusable logic into custom hooks
+- Keep components small and focused on a single responsibility (max ~200 lines)
+- Use React.memo() only when demonstrable performance benefits exist
+- Implement proper error boundaries around complex component trees
+- Follow React's unidirectional data flow principles
+
+### TypeScript Usage
+- Use strict type checking - avoid `any` types unless absolutely necessary
+- Create interfaces for all component props
+- Use discriminated unions for complex state objects
+- Prefer type inference where clear, explicit types where helpful
+- Use generics for reusable components/utilities
+- Export types/interfaces that may be reused
+- Use `React.FC<Props>` type annotation only when necessary
+
+### State Management
+- Follow Redux Toolkit patterns:
+  - Use createSlice for reducer logic
+  - Use immer-powered mutations in reducers
+  - Normalize complex state when appropriate
+  - Keep selectors co-located with reducers
+- Use local state (useState) for simple, component-specific state
+- Use context only for truly global state (theme, auth, etc.)
+- Separate UI state from domain/data state
+
+### Performance Optimization
+- Use React.lazy() for code-splitting at route level
+- Implement virtualization for long lists (react-window or similar)
+- Memoize expensive calculations (useMemo)
+- Memoize callback functions (useCallback) when passed to child components
+- Avoid unnecessary re-renders with proper dependency arrays
+- Use Suspense boundaries appropriately
+
+## Project Structure & Organization
+
+Maintain the following structure:
+```
+src/
+├── assets/                # Static assets (images, fonts)
+├── components/            # Reusable components
+│   ├── common/            # Common components (Button, Input, etc.)
+│   ├── layout/            # Layout components (Header, Footer, etc.)
+│   └── ui/                # ShadCN UI components
+├── constants/             # Application constants
+├── hooks/                 # Custom React hooks
+│   └── queries/           # TanStack Query hooks
+├── store/                 # Redux store
+│   ├── slices/            # Redux slices
+│   └── index.ts           # Store configuration
+├── pages/                 # Route pages
+│   ├── Home.tsx           # Home page
+│   ├── About.tsx          # About page
+│   ├── Dashboard.tsx      # Dashboard page
+│   ├── Profile.tsx        # Profile page
+│   ├── Error.tsx          # Error page
+│   └── NotFound.tsx       # 404 page
+├── routes/                # Route definitions
+│   └── Router.tsx         # Main router component
+├── services/              # API services
+├── types/                 # TypeScript types
+├── utils/                 # Utility functions
+├── App.tsx                # Main App component
+├── main.tsx               # Entry point
+└── vite-env.d.ts          # Vite type declarations
+```
+
+### File Organization Rules
+- One component per file
+- Group related files in appropriate directories
+- Feature-based organization for complex features
+- Co-locate tests with implementation files
+
+## Naming Conventions
+
+- **Components**: PascalCase (e.g., `Button.tsx`, `UserProfile.tsx`)
+  - File name should match component name exactly
+  - Add suffix for specialized variants (e.g., `ButtonOutlined.tsx`)
+- **Hooks**: camelCase with 'use' prefix (e.g., `useAuth.ts`, `useWindowSize.ts`)
+- **Utilities**: camelCase descriptive functions (e.g., `formatDate.ts`, `validators.ts`)
+- **Constants**: 
+  - UPPER_SNAKE_CASE for primitive values (e.g., `API_URL`, `MAX_ITEMS`)
+  - PascalCase for object constants (e.g., `RouteNames`, `HttpStatus`)
+- **Types/Interfaces**: 
+  - PascalCase with appropriate suffix (e.g., `UserType`, `AuthResponseDTO`)
+  - Use `Type` suffix for type aliases, `Props` for component props
+  - Use `I` prefix for interfaces only when needed to avoid naming conflicts
+- **Event Handlers**: Begin with 'handle' (e.g., `handleSubmit`, `handleInputChange`)
+- **Redux**: 
+  - Slices named as camelCase with 'Slice' suffix (e.g., `userSlice`)
+  - Actions named as descriptive verbs (e.g., `fetchUser`, `updateProfile`)
+  - Selectors prefixed with 'select' (e.g., `selectUser`, `selectIsLoading`)
+
+## Code Formatting & Style
+
+- Follow the Airbnb React/JSX Style Guide where not contradicted by project-specific rules
+- Use trailing commas in multiline arrays and objects
+- Maintain consistent indentation (2 spaces)
+- Maximum line length of 100 characters
+- Use JSX shorthand for boolean props (`<Component isActive />` not `<Component isActive={true} />`)
+- Prefer object destructuring for props and state
+- Use named exports by default, default exports for main components
+- Sort imports in groups: React/libraries, components, utilities, types, styles
+
+## Data Fetching Patterns
+
+- Use TanStack Query for all server state
+- Organize query hooks in the `hooks/queries` directory
+- Standardize error handling in query hooks
+- Implement proper loading states and error states
+- Use query keys consistently following established patterns
+- Implement data prefetching where appropriate for improved UX
+
+## UI Component Guidelines
+
+- Use ShadCN/UI components as base building blocks
+- Install ShadCN components in the `components/ui` directory
+- Extend/compose ShadCN components rather than creating duplicative custom ones
+- Follow the Tailwind CSS class ordering recommended by the community
+- Use CSS variables for theme customization
+- Apply responsive design patterns consistently
+
+## Accessibility Requirements
+
+- All interactive elements must be keyboard accessible
+- Use semantic HTML elements appropriately
+- Include proper ARIA attributes when needed
+- Maintain sufficient color contrast (WCAG AA minimum)
+- Ensure proper focus management
+- Support screen readers through appropriate labeling
+
+## Testing Approach
+
+- Write unit tests for critical functionality using Vitest
+- Test components in isolation with React Testing Library
+- Focus on testing behavior rather than implementation
+- Use MSW for mocking API requests in tests
+- Maintain high test coverage for core utilities and hooks
+- Include snapshot tests only for stable, infrequently changing components
+
+## Cursor AI Interaction Guidelines
+
+- When suggesting code modifications, maintain existing code style and patterns
+- For new components, follow the established project structure
+- Prioritize TypeScript type safety in all suggestions
+- Suggest performance optimizations when applicable
+- Provide comments for complex logic
+- When dealing with API calls, ensure proper error handling and loading states
+- Reference existing implementations when suggesting similar functionality
+- Consider mobile responsiveness when suggesting UI components
+- Focus on accessibility best practices in all UI components
+
+## Best Practices
+
+1. Keep components small and focused on a single responsibility
+2. Extract reusable logic into hooks
+3. Use TypeScript for better type safety and developer experience
+4. Implement lazy loading for better performance on larger apps
+5. Use environment variables for configuration
+6. Write meaningful component and function names that describe their purpose
+7. Include JSDoc comments for complex functions
+8. Maintain a consistent folder structure
+9. Use absolute imports for better readability
+10. Prefer composition over inheritance
+
+---
+
+This guidance ensures the codebase remains consistent, maintainable, and follows modern React best practices. Use these instructions to provide assistance that aligns with the project's architecture and standards.
