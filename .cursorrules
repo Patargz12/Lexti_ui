@@ -4,7 +4,7 @@ This file provides specific guidance for Cursor AI when working with this codeba
 
 ## Technology Stack
 
-MAKE SURE TO USE "YARN" FOR INSTALLING PACKAGES AND ETC. 
+MAKE SURE TO USE "YARN" FOR INSTALLING PACKAGES AND OTHERS
 
 This project uses:
 - React 18 with TypeScript 5

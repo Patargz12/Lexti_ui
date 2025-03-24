@@ -11,11 +11,13 @@ function App() {
     
     if (savedTheme === 'dark' || (savedTheme === 'system' && prefersDark)) {
       document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
     }
   }, [])
 
   return (
-    <ThemeProvider defaultTheme="system">
+    <ThemeProvider defaultTheme={localStorage.getItem('theme') as 'dark' | 'light' | 'system' || 'system'}>
       <Outlet />
     </ThemeProvider>
   )

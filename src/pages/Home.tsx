@@ -37,7 +37,7 @@ export function Home() {
       {/* Use the SearchNavbar at the top (outside of main content) */}
       <SearchNavbar onSearch={handleSearch} />
       
-      <div className="mt-16"> {/* Added margin top to accommodate fixed navbar */}
+      <div className="mt-8"> {/* Added margin top to accommodate fixed navbar */}
         <div className="flex h-[calc(100vh-64px)]">
           {/* Column 1: Filter Categories - Increased width */}
           <div className="w-72 min-w-72 border-r border-gray-200 dark:border-gray-700 overflow-y-auto bg-white dark:bg-gray-800">
@@ -108,15 +108,7 @@ export function Home() {
                 </div>
               </div>
 
-              {/* Apply filters and reset buttons */}
-              <div className="mt-6 flex gap-2">
-                <button className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-md text-sm font-medium flex-1">
-                  Apply filters
-                </button>
-                <button className="border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 px-4 py-2 rounded-md text-sm font-medium">
-                  Reset
-                </button>
-              </div>
+           
             </div>
           </div>
           

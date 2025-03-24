@@ -11,7 +11,7 @@ export function MainPage({ activeLink }: SplashPageProps) {
    <>
     <Navbar activeNavItem={activeLink} />
 
-<div className="flex flex-col items-center justify-center min-h-[100vh]  py-16 px-4">
+<div className="flex flex-col items-center justify-center min-h-[100vh] bg-white dark:bg-gray-900 py-16 px-4">
   <div className="">
     <img src = {LexibeanBanner} className = "h-32 w-auto" />
   </div>
