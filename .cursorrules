@@ -2,18 +2,22 @@
 
 This file provides specific guidance for Cursor AI when working with this codebase. Follow these instructions when suggesting code, making edits, or providing recommendations.
 
-## Technology Stack
+## IMPORTANT!! 
 
-MAKE SURE TO USE "YARN" FOR INSTALLING PACKAGES AND OTHERS
+- MAKE SURE TO USE "YARN" FOR INSTALLING PACKAGES AND OTHERS
+- FOR COMPONENTS, MAKE SURE TO USE SHADCN IF APPLICABLE
+- PERFORM THE "DON'T REPEAT YOURSELF" methodology. 
+- FOLLOW REACTJS BEST PRACTICES
 
-This project uses:
+## This project uses:
 - React 18 with TypeScript 5
 - Vite 5 for build tooling
-- Redux Toolkit for state management
+- Zustand for state management
 - TanStack Query v5 for data fetching
 - Tailwind CSS 3 with ShadCN/UI components
 - React Router 6 for routing
 - Axios for HTTP requests
+
 
 ## Code Style & Architecture
 
@@ -26,24 +30,24 @@ This project uses:
 - Implement proper error boundaries around complex component trees
 - Follow React's unidirectional data flow principles
 
+
 ### TypeScript Usage
-- Use strict type checking - avoid `any` types unless absolutely necessary
+- Use strict type checking - avoid any types unless absolutely necessary
 - Create interfaces for all component props
 - Use discriminated unions for complex state objects
 - Prefer type inference where clear, explicit types where helpful
 - Use generics for reusable components/utilities
 - Export types/interfaces that may be reused
-- Use `React.FC<Props>` type annotation only when necessary
 
-### State Management
-- Follow Redux Toolkit patterns:
-  - Use createSlice for reducer logic
-  - Use immer-powered mutations in reducers
-  - Normalize complex state when appropriate
-  - Keep selectors co-located with reducers
-- Use local state (useState) for simple, component-specific state
-- Use context only for truly global state (theme, auth, etc.)
-- Separate UI state from domain/data state
+- Use React.FC<Props> type annotation only when necessary
+
+### State Management with Zustand
+- Create focused stores for specific domains:
+- Use create to define stores with simple state and actions
+- Leverage immer with immer middleware for immutable updates
+- Split complex applications into multiple stores
+- Co-locate selectors with store definitions
+
 
 ### Performance Optimization
 - Use React.lazy() for code-splitting at route level
@@ -53,10 +57,10 @@ This project uses:
 - Avoid unnecessary re-renders with proper dependency arrays
 - Use Suspense boundaries appropriately
 
+
 ## Project Structure & Organization
 
 Maintain the following structure:
-```
 src/
 ├── assets/                # Static assets (images, fonts)
 ├── components/            # Reusable components
@@ -66,9 +70,7 @@ src/
 ├── constants/             # Application constants
 ├── hooks/                 # Custom React hooks
 │   └── queries/           # TanStack Query hooks
-├── store/                 # Redux store
-│   ├── slices/            # Redux slices
-│   └── index.ts           # Store configuration
+├── store/                 # Zustand store 
 ├── pages/                 # Route pages
 │   ├── Home.tsx           # Home page
 │   ├── About.tsx          # About page
@@ -84,7 +86,6 @@ src/
 ├── App.tsx                # Main App component
 ├── main.tsx               # Entry point
 └── vite-env.d.ts          # Vite type declarations
-```
 
 ### File Organization Rules
 - One component per file
@@ -92,25 +93,26 @@ src/
 - Feature-based organization for complex features
 - Co-locate tests with implementation files
 
+
 ## Naming Conventions
 
-- **Components**: PascalCase (e.g., `Button.tsx`, `UserProfile.tsx`)
+- *Components*: PascalCase (e.g., Button.tsx, UserProfile.tsx)
   - File name should match component name exactly
-  - Add suffix for specialized variants (e.g., `ButtonOutlined.tsx`)
-- **Hooks**: camelCase with 'use' prefix (e.g., `useAuth.ts`, `useWindowSize.ts`)
-- **Utilities**: camelCase descriptive functions (e.g., `formatDate.ts`, `validators.ts`)
-- **Constants**: 
-  - UPPER_SNAKE_CASE for primitive values (e.g., `API_URL`, `MAX_ITEMS`)
-  - PascalCase for object constants (e.g., `RouteNames`, `HttpStatus`)
-- **Types/Interfaces**: 
-  - PascalCase with appropriate suffix (e.g., `UserType`, `AuthResponseDTO`)
-  - Use `Type` suffix for type aliases, `Props` for component props
-  - Use `I` prefix for interfaces only when needed to avoid naming conflicts
-- **Event Handlers**: Begin with 'handle' (e.g., `handleSubmit`, `handleInputChange`)
-- **Redux**: 
-  - Slices named as camelCase with 'Slice' suffix (e.g., `userSlice`)
-  - Actions named as descriptive verbs (e.g., `fetchUser`, `updateProfile`)
-  - Selectors prefixed with 'select' (e.g., `selectUser`, `selectIsLoading`)
+  - Add suffix for specialized variants (e.g., ButtonOutlined.tsx)
+- *Hooks*: camelCase with 'use' prefix (e.g., useAuth.ts, useWindowSize.ts)
+- *Utilities*: camelCase descriptive functions (e.g., formatDate.ts, validators.ts)
+- *Constants*: 
+  - UPPER_SNAKE_CASE for primitive values (e.g., API_URL, MAX_ITEMS)
+  - PascalCase for object constants (e.g., RouteNames, HttpStatus)
+- *Types/Interfaces*: 
+  - PascalCase with appropriate suffix (e.g., UserType, AuthResponseDTO)
+  - Use Type suffix for type aliases, Props for component props
+  - Use I prefix for interfaces only when needed to avoid naming conflicts
+- *Event Handlers*: Begin with 'handle' (e.g., handleSubmit, handleInputChange)
+- *Zustand*: 
+  - Store names as camelCase with 'Store' suffix (e.g., useUserStore)
+  - Actions named as descriptive verbs (e.g., fetchUser, updateProfile)
+  - Selectors accessed directly from store or created with 'get' prefix (e.g., getUser, getIsLoading)
 
 ## Code Formatting & Style
 
@@ -118,28 +120,33 @@ src/
 - Use trailing commas in multiline arrays and objects
 - Maintain consistent indentation (2 spaces)
 - Maximum line length of 100 characters
-- Use JSX shorthand for boolean props (`<Component isActive />` not `<Component isActive={true} />`)
+
+- Use JSX shorthand for boolean props (<Component isActive /> not <Component isActive={true} />)
 - Prefer object destructuring for props and state
 - Use named exports by default, default exports for main components
 - Sort imports in groups: React/libraries, components, utilities, types, styles
 
+
 ## Data Fetching Patterns
 
 - Use TanStack Query for all server state
-- Organize query hooks in the `hooks/queries` directory
+- Organize query hooks in the hooks/queries directory
 - Standardize error handling in query hooks
 - Implement proper loading states and error states
 - Use query keys consistently following established patterns
 - Implement data prefetching where appropriate for improved UX
 
+
 ## UI Component Guidelines
 
-- Use ShadCN/UI components as base building blocks
-- Install ShadCN components in the `components/ui` directory
+Use ShadCN/UI components as base building blocks
+
+- Install ShadCN components in the components/ui directory
 - Extend/compose ShadCN components rather than creating duplicative custom ones
 - Follow the Tailwind CSS class ordering recommended by the community
 - Use CSS variables for theme customization
 - Apply responsive design patterns consistently
+
 
 ## Accessibility Requirements
 
@@ -150,6 +157,7 @@ src/
 - Ensure proper focus management
 - Support screen readers through appropriate labeling
 
+
 ## Testing Approach
 
 - Write unit tests for critical functionality using Vitest
@@ -158,6 +166,7 @@ src/
 - Use MSW for mocking API requests in tests
 - Maintain high test coverage for core utilities and hooks
 - Include snapshot tests only for stable, infrequently changing components
+
 
 ## Cursor AI Interaction Guidelines
 
@@ -171,18 +180,20 @@ src/
 - Consider mobile responsiveness when suggesting UI components
 - Focus on accessibility best practices in all UI components
 
+
 ## Best Practices
 
-1. Keep components small and focused on a single responsibility
-2. Extract reusable logic into hooks
-3. Use TypeScript for better type safety and developer experience
-4. Implement lazy loading for better performance on larger apps
-5. Use environment variables for configuration
-6. Write meaningful component and function names that describe their purpose
-7. Include JSDoc comments for complex functions
-8. Maintain a consistent folder structure
-9. Use absolute imports for better readability
-10. Prefer composition over inheritance
+- Keep components small and focused on a single responsibility
+- Extract reusable logic into hooks
+- Use TypeScript for better type safety and developer experience
+- Implement lazy loading for better performance on larger apps
+- Use environment variables for configuration
+- Write meaningful component and function names that describe their purpose
+- Include JSDoc comments for complex functions
+- Maintain a consistent folder structure
+- Use absolute imports for better readability
+- Prefer composition over inheritance
+
 
 ---
 
