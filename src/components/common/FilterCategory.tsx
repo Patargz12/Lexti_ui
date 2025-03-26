@@ -18,7 +18,7 @@ export function FilterCategory({
   title, 
   options, 
   selectedOptions, 
-  badgeCount,
+  badgeCount = 0,
   initialExpanded = false,
   onChange 
 }: FilterCategoryProps) {
@@ -61,8 +61,8 @@ export function FilterCategory({
       >
         <div className="flex items-center">
           <h3 className="text-sm font-medium text-gray-900 dark:text-white">{title}</h3>
-          {badgeCount !== undefined && badgeCount > 0 && (
-            <span className="ml-2 text-xs bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 px-2 py-0.5 rounded-full">
+          {badgeCount !== undefined && (
+            <span className="ml-2 text-xs bg-tertiary-500/10 font-semibold text-tertiary-500 dark:bg-gray-700 dark:text-gray-300 px-2 py-0.5 rounded-full">
               {badgeCount}
             </span>
           )}

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Button } from '@/components/common/Button';
+import { useNavigate } from 'react-router-dom';
 
 interface SearchBarProps {
   onSearch?: (query: string) => void;
@@ -7,6 +8,11 @@ interface SearchBarProps {
 
 export function SearchBar({ onSearch }: SearchBarProps) {
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
+
+  const toSearch = () => {
+    navigate('/search');
+  }
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +47,7 @@ export function SearchBar({ onSearch }: SearchBarProps) {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search legal documents..."
-            className="w-full px-4 py-3 pl-10 pr-4 border border-gray-200 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+            className="w-full px-4 py-3 pl-10 pr-4 border border-gray-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
           />
         </div>
       </form>
@@ -50,14 +56,16 @@ export function SearchBar({ onSearch }: SearchBarProps) {
         <Button 
           variant="default" 
           size="md"
-          onClick={() => onSearch && onSearch(searchTerm)}
+          onClick={toSearch}
         >
+        
           Lexi Search
+          
         </Button>
         <Button 
           variant="primary" 
           size="md" 
-          className="bg-gray-800 border-gray-800 hover:bg-gray-900"
+          className=" border-gray-800 hover:bg-gray-900"
           onClick={() => onSearch && onSearch(`AI:${searchTerm}`)}
         >
           Ask Lexibean

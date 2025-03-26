@@ -11,6 +11,30 @@ import {
   CASE_OUTCOME_OPTIONS
 } from '@/constants/filterOptions';
 
+// Reusable Legal Domain Tags component
+interface LegalDomainTagsProps {
+  domains?: string[];
+  compact?: boolean;
+}
+
+function LegalDomainTags({ domains = ['Political Law', 'Remedial Law', 'Legal Ethics'], compact = false }: LegalDomainTagsProps) {
+  return (
+    <div className={`flex flex-wrap ${compact ? 'gap-1' : 'gap-2'}`}>
+      {domains.map((domain) => (
+        <button 
+          key={domain}
+          className={`inline-flex items-center rounded-md px-3 py-1 text-sm font-medium bg-tertiary-500/10 text-tertiary-500 hover:bg-tertiary-500/20 ${compact ? 'text-xs py-0.5' : ''}`}
+        >
+          {domain}
+          <svg xmlns="http://www.w3.org/2000/svg" className={`${compact ? 'h-3 w-3' : 'h-4 w-4'} ml-1 text-tertiary-500`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+        </button>
+      ))}
+    </div>
+  );
+}
+
 // First, let's create a reusable component for the animated header
 function AnimatedFilterHeader({ 
   title, 
@@ -33,9 +57,9 @@ function AnimatedFilterHeader({
       <div className="flex flex-col">
         <div className="flex items-center">
           <h3 className="text-sm font-medium text-gray-900 dark:text-white">{title}</h3>
-          {badgeCount !== undefined && badgeCount > 0 && (
-            <span className="ml-2 text-xs bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 px-2 py-0.5 rounded-full">
-              {badgeCount}
+          {badgeCount !== undefined && (
+            <span className="ml-2 text-xs bg-tertiary-500/10 font-semibold text-tertiary-500 dark:bg-gray-700 dark:text-gray-300 px-2 py-0.5 rounded-full">
+              {badgeCount} 
             </span>
           )}
         </div>
@@ -365,6 +389,7 @@ export function Home() {
                   onApplyFilters={handleApplyFilters}
                   onResetFilters={handleResetFilters}
                   onToggleFilterPanel={() => setIsFilterPanelVisible(false)}
+                  disabled={activeFiltersCount === 0}
                 />
                 
                 <div className="p-5 overflow-y-auto scrollbar-hide" style={{ height: 'calc(100vh - 112px)' }}>
@@ -397,7 +422,6 @@ export function Home() {
                     <div className="border-b border-gray-200 dark:border-gray-700 pb-3">
                       <AnimatedFilterHeader
                         title="Time Period"
-                        badgeCount={filters.timePeriod ? 1 : 0}
                         isOpen={timeExpanded}
                         onClick={() => setTimeExpanded(!timeExpanded)}
                         caption={getTimePeriodCaption()}
@@ -664,7 +688,6 @@ export function Home() {
                     <div className="border-b border-gray-200 dark:border-gray-700 pb-3">
                       <AnimatedFilterHeader
                         title="Keyword and Phrase"
-                        badgeCount={filters.keyword ? 1 : 0}
                         isOpen={keywordExpanded}
                         onClick={() => setKeywordExpanded(!keywordExpanded)}
                         caption={getKeywordCaption()}
@@ -1069,13 +1092,21 @@ export function Home() {
               <div>
                 <div className="flex space-x-2">
                   <button 
-                    className={`px-3 py-1 text-sm rounded-full ${filters.caseType === 'Case' ? 'bg-teal-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200'}`}
+                    className={`px-5 py-1.5 text-sm font-medium rounded-full transition-colors ${
+                      filters.caseType === 'Case' 
+                        ? 'bg-tertiary-500 text-white' 
+                        : 'bg-white text-tertiary-500 border border-tertiary-500 hover:bg-tertiary-500/5'
+                    }`}
                     onClick={() => handleFilterChange({...filters, caseType: 'Case'})}
                   >
                     Case 74k
                   </button>
                   <button 
-                    className={`px-3 py-1 text-sm rounded-full ${filters.caseType === 'Law' ? 'bg-teal-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200'}`}
+                    className={`px-5 py-1.5 text-sm font-medium rounded-full transition-colors ${
+                      filters.caseType === 'Law' 
+                        ? 'bg-tertiary-500 text-white' 
+                        : 'bg-white text-tertiary-500 border border-tertiary-500 hover:bg-tertiary-500/5'
+                    }`}
                     onClick={() => handleFilterChange({...filters, caseType: 'Law'})}
                   >
                     Law 74k
@@ -1137,11 +1168,16 @@ export function Home() {
                           </button>
                         </div>
                       </div>
-                      <h3 className="text-base font-medium text-gray-900 dark:text-white mb-2">{caseItem.title}</h3>
+                      <h3 className="text-base font-medium text-tertiary-500 dark:text-tertiary-500">{caseItem.title}</h3>
+                        <span className="flex text-xs text-gray-500 dark:text-gray-400 mb-3">{caseItem.date}</span>
                       <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3">{caseItem.description}</p>
-                      <div className="flex mt-2 text-xs text-gray-500 dark:text-gray-400">
-                        <span>{caseItem.date}</span>
+                      
+                      {/* Add Legal Domain Tags */}
+                      <div className="mt-4 mb-1.5">
+                        <LegalDomainTags />
                       </div>
+                      
+                   
                     </div>
                   </div>
                 ))
@@ -1150,7 +1186,7 @@ export function Home() {
           </div>
           
           {/* Column 3: Case Detail - Set to half width to match column 2 */}
-          <div className="w-1/2 overflow-y-auto scrollbar-hide bg-white dark:bg-gray-800">
+          <div className="w-1/2 px-5 overflow-y-auto scrollbar-hide bg-white dark:bg-gray-800">
             {isLoadingCase ? (
               <div className="p-8 text-center">
                 <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-teal-600 mx-auto"></div>
@@ -1170,110 +1206,103 @@ export function Home() {
               </div>
             ) : caseData ? (
               <div className="p-6">
-                <div className="flex justify-between items-start mb-6">
-                  <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{caseData.title}</h1>
-                  <div className="flex space-x-2">
-                    <button className="p-2 text-gray-400 hover:text-gray-500">
+                {/* Case title and actions header row */}
+                <div className="flex justify-between items-center mb-6">
+                  <h1 className="text-2xl font-bold text-tertiary-500 dark:text-tertiary-500 flex-1 pr-4">
+                    {caseData.title}
+                  </h1>
+                  <div className="flex items-center space-x-2 flex-shrink-0">
+                    <button className="flex items-center justify-center gap-2 py-1 rounded-lg border border-gray-300 dark:border-gray-600 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 w-[121px]">
+                      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 5.25C7.44365 5.25 3.25 8.73275 3.25 12C3.25 15.2673 7.44365 18.75 12 18.75C16.5563 18.75 20.75 15.2673 20.75 12C20.75 8.73275 16.5563 5.25 12 5.25Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M12 15.25C13.7949 15.25 15.25 13.7949 15.25 12C15.25 10.2051 13.7949 8.75 12 8.75C10.2051 8.75 8.75 10.2051 8.75 12C8.75 13.7949 10.2051 15.25 12 15.25Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                      View PDF
+                    </button>
+                    <button className="p-1.5 text-gray-400 hover:text-gray-500">
                       <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                       </svg>
                     </button>
-                    <button className="p-2 text-gray-400 hover:text-gray-500">
+                    <button className="p-1.5 text-gray-400 hover:text-gray-500">
                       <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                       </svg>
                     </button>
-                    <button className="p-2 text-gray-400 hover:text-gray-500">
+                    <button className="p-1.5 text-gray-400 hover:text-gray-500">
                       <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                       </svg>
                     </button>
                   </div>
                 </div>
                 
-                <div className="mb-4">
-                  <div className="flex items-center mb-4">
-                    <div className="flex space-x-2 mr-4">
-                      <span className="text-sm">Cited in</span>
-                      <span className="bg-teal-100 dark:bg-teal-900/30 text-teal-800 dark:text-teal-200 text-xs px-2 py-0.5 rounded-full">
+                {/* Citation metrics row */}
+                <div className="mb-6">
+                  <div className="flex items-center space-x-6 mb-4">
+                    <div className="flex items-center">
+                      <span className="text-sm font-medium text-gray-600 dark:text-gray-400 mr-2">Cited In</span>
+                      <span className="bg-tertiary-500/10 text-tertiary-500 font-semibold text-sm px-2 py-0.5 rounded-full">
                         {caseData.cited || 3}
                       </span>
                     </div>
-                    <div className="flex space-x-2">
-                      <span className="text-sm">Cross Ref</span>
-                      <span className="bg-teal-100 dark:bg-teal-900/30 text-teal-800 dark:text-teal-200 text-xs px-2 py-0.5 rounded-full">
+                    <div className="flex items-center">
+                      <span className="text-sm font-medium text-gray-600 dark:text-gray-400 mr-2">Cross Ref</span>
+                      <span className="bg-tertiary-500/10 text-tertiary-500 font-semibold text-sm px-2 py-0.5 rounded-full">
                         {caseData.crossRef || 5}
                       </span>
                     </div>
                   </div>
                   
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {caseData.politicalLaw && (
-                      <span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900/30 dark:text-blue-200">
-                        <span className="mr-1 h-1.5 w-1.5 rounded-full bg-blue-500"></span>
-                        Political Law
-                      </span>
-                    )}
-                    {caseData.remedialLaw && (
-                      <span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900/30 dark:text-blue-200">
-                        <span className="mr-1 h-1.5 w-1.5 rounded-full bg-blue-500"></span>
-                        Remedial Law
-                      </span>
-                    )}
-                    {caseData.legalEthics && (
-                      <span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900/30 dark:text-blue-200">
-                        <span className="mr-1 h-1.5 w-1.5 rounded-full bg-blue-500"></span>
-                        Legal Ethics
-                      </span>
-                    )}
+                  {/* Legal domain tags */}
+                  <LegalDomainTags />
+                </div>
+                
+                {/* Case metadata grid */}
+                <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md mb-6">
+                  <div className="grid grid-cols-3 divide-x divide-gray-200 dark:divide-gray-700">
+                    <div className="p-4">
+                      <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">Case</div>
+                      <div className="text-sm font-medium dark:text-gray-300">G.R. No. 212186</div>
+                    </div>
+                    <div className="p-4">
+                      <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">Decision Date</div>
+                      <div className="text-sm font-medium dark:text-gray-300">June 29, 2016</div>
+                    </div>
+                    <div className="p-4">
+                      <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">Ponente</div>
+                      <div className="text-sm font-medium dark:text-gray-300">LEONEN, J</div>
+                    </div>
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="bg-gray-50 dark:bg-gray-700/30 p-3 rounded">
-                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Case</div>
-                    <div className="text-sm font-medium">{caseData.caseNumber}</div>
-                  </div>
-                  <div className="bg-gray-50 dark:bg-gray-700/30 p-3 rounded">
-                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Decision Date</div>
-                    <div className="text-sm font-medium">{caseData.decision?.date || caseData.date}</div>
-                  </div>
-                  <div className="bg-gray-50 dark:bg-gray-700/30 p-3 rounded">
-                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Ponente</div>
-                    <div className="text-sm font-medium">{caseData.ponente || 'N/A'}</div>
-                  </div>
-                  <div className="bg-gray-50 dark:bg-gray-700/30 p-3 rounded">
-                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Case Category</div>
-                    <div className="text-sm font-medium">{caseData.category || 'N/A'}</div>
-                  </div>
-                </div>
-                
-                <div className="border-b border-gray-200 dark:border-gray-700 mb-6">
-                  <div className="flex space-x-6 -mb-px">
-                    <button className="px-1 py-2 border-b-2 border-teal-600 text-sm font-medium text-teal-600 dark:text-teal-400">
+                {/* Tabs navigation */}
+                <div className="border-b border-gray-200 mb-6">
+                  <div className="flex space-x-8">
+                    <button className="px-1 py-2 border-b-2 border-teal-600 text-sm font-bold text-teal-600">
                       Summary
                     </button>
-                    <button className="px-1 py-2 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
+                    <button className="px-1 py-2 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700">
                       Case Digest
                     </button>
-                    <button className="px-1 py-2 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
+                    <button className="px-1 py-2 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700">
                       Timeline
                     </button>
-                    <button className="px-1 py-2 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
+                    <button className="px-1 py-2 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700">
                       Q&A
                     </button>
-                    <button className="px-1 py-2 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
+                    <button className="px-1 py-2 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700">
                       Jurisprudence
                     </button>
                   </div>
                 </div>
                 
+                {/* Case summary content */}
                 <div>
                   <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Case Summary</h2>
-                  <p className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-line">
+                  <div className="text-gray-800 dark:text-gray-300">
                     {caseData.summary || caseData.description}
-                  </p>
+                  </div>
                 </div>
               </div>
             ) : (

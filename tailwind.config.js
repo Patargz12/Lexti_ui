@@ -8,11 +8,15 @@ export default {
   theme: {
   	extend: {
   		colors: {
-  			primary: {
-  				DEFAULT: 'hsl(var(--primary))',
-  				hover: '#4f46e5',
-  				foreground: 'hsl(var(--primary-foreground))'
-  			},
+  			primary: '#00a1a1',
+			secondary: '#14C8C8',
+			tertiary: {
+				'500': '#106464',
+			},
+			accent: {
+				'500': '#202c3c',
+			},
+  				
   			lavender: {
   				'100': '#f0ebff',
   				'200': '#e1d7ff',
@@ -34,18 +38,12 @@ export default {
   				DEFAULT: 'hsl(var(--popover))',
   				foreground: 'hsl(var(--popover-foreground))'
   			},
-  			secondary: {
-  				DEFAULT: 'hsl(var(--secondary))',
-  				foreground: 'hsl(var(--secondary-foreground))'
-  			},
+  		
   			muted: {
   				DEFAULT: 'hsl(var(--muted))',
   				foreground: 'hsl(var(--muted-foreground))'
   			},
-  			accent: {
-  				DEFAULT: 'hsl(var(--accent))',
-  				foreground: 'hsl(var(--accent-foreground))'
-  			},
+  		
   			destructive: {
   				DEFAULT: 'hsl(var(--destructive))',
   				foreground: 'hsl(var(--destructive-foreground))'
@@ -60,6 +58,9 @@ export default {
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
   			}
+  		},
+  		borderColor: {
+  			DEFAULT: 'hsl(var(--border))',
   		},
   		animation: {
   			fadeIn: 'fadeIn 0.3s ease-in-out forwards'

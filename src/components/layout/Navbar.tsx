@@ -1,7 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { ThemeToggle } from '../ui/ThemeToggle';
 import { Button } from '../common/Button';
-import { Logo } from '../common/Logo';
 
 const navItems = [
   { label: 'Search', path: '/search' },
@@ -28,25 +27,23 @@ export function Navbar({ activeNavItem }: NavbarProps) {
   };
 
   return (
-    <nav className="flex fixed top-0 w-full justify-between items-center px-8 mx-4 py-3 border-b dark:border-gray-700 bg-white dark:bg-gray-900 z-10">
-      <div className="flex items-center space-x-6">
-      {navItems.map((item) => (
+    <nav className="flex fixed top-0 w-full justify-between items-center px-8 mx-4 py-5 dark:border-gray-700 bg-white dark:bg-gray-900 z-10">
+      <div className="flex items-center space-x-2">
+      {/* {navItems.map((item) => (
           <Link
             key={item.label}
             to={item.path}
             className={`px-3 py-2 text-sm font-medium transition-colors rounded-md ${
               isActive(item)
-                ? 'text-teal-700 bg-gray-100 dark:text-teal-500 dark:bg-gray-800'
+                ? 'text-primary-500 bg-gray-100 dark:text-primary-400 dark:bg-gray-800'
                 : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
             }`}
           >
             {item.label}
           </Link>
-        ))}
+        ))} */}
       </div>
-      
- 
-      
+
       <div className="flex items-center space-x-4 mr-12">
         <ThemeToggle />
         <Button size="sm">
