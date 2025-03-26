@@ -6,6 +6,11 @@ alwaysApply: false
 ---
 description: 
 globs: 
+alwaysApply: false
+---
+---
+description: 
+globs: 
 alwaysApply: true
 ---
 # Project Overview 
@@ -23,7 +28,7 @@ MAKE SURE TO USE "YARN" FOR INSTALLING PACKAGES AND ETC.
 This project uses:
 - React 18 with TypeScript 5
 - Vite 5 for build tooling
-- Redux Toolkit for state management
+- Zustand Toolkit for state management
 - TanStack Query v5 for data fetching
 - Tailwind CSS 3 with ShadCN/UI components
 - React Router 6 for routing
@@ -49,15 +54,17 @@ This project uses:
 - Export types/interfaces that may be reused
 - Use `React.FC<Props>` type annotation only when necessary
 
-### State Management
-- Follow Redux Toolkit patterns:
-  - Use createSlice for reducer logic
-  - Use immer-powered mutations in reducers
-  - Normalize complex state when appropriate
-  - Keep selectors co-located with reducers
-- Use local state (useState) for simple, component-specific state
-- Use context only for truly global state (theme, auth, etc.)
-- Separate UI state from domain/data state
+### State Management with Zustand
+- Create focused stores for specific domains:
+- Use create to define stores with simple state and actions
+- Leverage immer with immer middleware for immutable updates
+- Split complex applications into multiple stores
+- Co-locate selectors with store definitions
+
+Use local state (useState) for simple, component-specific state
+Prefer Zustand over Context for shared state (theme, auth, etc.)
+Keep UI state separate from domain/data state
+Use Zustand's built-in persistence when needed for data that survives refreshes
 
 ### Performance Optimization
 - Use React.lazy() for code-splitting at route level
@@ -80,9 +87,7 @@ src/
 ├── constants/             # Application constants
 ├── hooks/                 # Custom React hooks
 │   └── queries/           # TanStack Query hooks
-├── store/                 # Redux store
-│   ├── slices/            # Redux slices
-│   └── index.ts           # Store configuration
+├── store/                 # Zustand store
 ├── pages/                 # Route pages
 │   ├── Home.tsx           # Home page
 │   ├── About.tsx          # About page
