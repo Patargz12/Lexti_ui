@@ -1,24 +1,13 @@
-import { useEffect } from 'react'
-import { Outlet } from 'react-router-dom'
 import { ThemeProvider } from './components/ui/ThemeProvider'
+import { Router } from '@/routes/router'
+import { ThemeDebug } from './components/ui/ThemeDebug'
 import './App.css'
 
 function App() {
-  // Check for saved theme preference or use system default
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') || 'system'
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-    
-    if (savedTheme === 'dark' || (savedTheme === 'system' && prefersDark)) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-  }, [])
-
   return (
-    <ThemeProvider defaultTheme={localStorage.getItem('theme') as 'dark' | 'light' | 'system' || 'system'}>
-      <Outlet />
+    <ThemeProvider defaultTheme="system">
+      <Router />
+      {/* <ThemeDebug /> */}
     </ThemeProvider>
   )
 }

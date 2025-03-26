@@ -1,6 +1,11 @@
 import { LegalCase, ApiResponse, SearchFilters } from '@/types';
+import { 
+  DOCUMENT_TYPE_OPTIONS, 
+  CASE_OUTCOME_OPTIONS, 
+  PARTIES_INVOLVED_OPTIONS 
+} from '@/constants/filterOptions';
 
-// Mock legal cases data matching the UI in the Figma design
+
 export const mockLegalCases: LegalCase[] = [
   {
     id: '1',
@@ -118,21 +123,223 @@ export const fetchLegalCases = async (filters?: SearchFilters): Promise<ApiRespo
     // Keyword search
     if (filters.keyword) {
       const keyword = filters.keyword.toLowerCase();
+      const searchMode = filters.searchMode || 'any';
+      
       // If keyword starts with "AI:", treat it as a special AI search
       if (keyword.startsWith("ai:")) {
         // Simulate AI search by just returning all cases for now
         // In a real app, this would do a more sophisticated search
       } else {
-        // Standard search
+        // Apply different search modes
+        switch (searchMode) {
+          case 'all':
+            // All words must be present
+            filteredCases = filteredCases.filter(c => {
+              const searchText = (c.title + ' ' + c.description + ' ' + c.caseNumber).toLowerCase();
+              const keywords = keyword.split(/\s+/).filter(k => k.length > 0);
+              return keywords.every(k => searchText.includes(k));
+            });
+            break;
+          
+          case 'exact':
+            // Exact phrase match
         filteredCases = filteredCases.filter(c => 
           c.title.toLowerCase().includes(keyword) || 
           c.description.toLowerCase().includes(keyword) ||
           c.caseNumber.toLowerCase().includes(keyword)
         );
+            break;
+          
+          case 'any':
+          default:
+            // Any of the words (default)
+            filteredCases = filteredCases.filter(c => {
+              const searchText = (c.title + ' ' + c.description + ' ' + c.caseNumber).toLowerCase();
+              const keywords = keyword.split(/\s+/).filter(k => k.length > 0);
+              return keywords.some(k => searchText.includes(k));
+            });
+            break;
+        }
       }
     }
     
-    // Add more filter logic as needed
+    // Apply Time Period filters
+    if (filters.timePeriod) {
+      const timePeriod = filters.timePeriod.toLowerCase();
+      const currentYear = new Date().getFullYear();
+      
+      // Parse dates from cases (in a real app, these would be actual Date objects)
+      filteredCases = filteredCases.filter(c => {
+        // Extract year from date (e.g., "Feb 28, 2024" -> 2024)
+        const caseYear = parseInt(c.date.split(', ')[1]);
+        if (isNaN(caseYear)) return true; // Keep cases with unparseable dates
+        
+        if (timePeriod.includes('to')) {
+          // Custom date range - just use a simple year check for demo
+          const [startStr, endStr] = timePeriod.split(' to ');
+          // Check if we have valid date inputs and extract years
+          if (startStr && endStr) {
+            try {
+              // Simple check - just see if the years are in range
+              const startYear = parseInt(startStr.split('/')[2]) + 2000; // Assuming "yy" format
+              const endYear = parseInt(endStr.split('/')[2]) + 2000;
+              
+              if (!isNaN(startYear) && !isNaN(endYear)) {
+                return caseYear >= startYear && caseYear <= endYear;
+              }
+            } catch {
+              // If date parsing fails, keep the case
+              return true;
+            }
+          }
+        } else if (timePeriod === 'last_year') {
+          return caseYear >= currentYear - 1;
+        } else if (timePeriod === 'last_5_years') {
+          return caseYear >= currentYear - 5;
+        } else if (timePeriod === 'last_10_years') {
+          return caseYear >= currentYear - 10;
+        } else if (timePeriod === 'since_2000') {
+          return caseYear >= 2000;
+        } else if (timePeriod === 'before_2000') {
+          return caseYear < 2000;
+        } else if (timePeriod === 'all_time') {
+          return true; // All cases pass
+        }
+        
+        return true; // Default: keep all cases
+      });
+    }
+    
+    // Apply Legal Domain filters
+    const legalDomain = filters.legalDomain || [];
+    if (legalDomain.length > 0) {
+      // In a real app, you would filter based on a legal domain property
+      // This is a mock implementation
+      filteredCases = filteredCases.filter(c => {
+        // For demo, let's use a simple rule: even IDs match first half of legal domains, odd IDs match second half
+        const caseIdNum = parseInt(c.id);
+        if (isNaN(caseIdNum)) return true;
+        
+        const matchesLegalDomain = legalDomain.some(domain => {
+          if (caseIdNum % 2 === 0) {
+            return ['criminal-law', 'civil-law', 'administrative-law', 'constitutional-law', 'environmental-law', 'international-law', 'ip-law'].includes(domain);
+          } else {
+            return ['health-law', 'labor-law', 'commercial-law', 'tax-law', 'family-law', 'human-rights-law', 'election-law', 'cyber-law'].includes(domain);
+          }
+        });
+        
+        return matchesLegalDomain;
+      });
+    }
+    
+    // Apply Document Type filters
+    const documentType = filters.documentType || [];
+    if (documentType.length > 0) {
+      // For demo, filter based on id of cases
+      filteredCases = filteredCases.filter(c => {
+        const caseId = parseInt(c.id);
+        // Each case will match with some document types based on its ID
+        return documentType.some(type => {
+          const typeIndex = DOCUMENT_TYPE_OPTIONS.findIndex(opt => opt.id === type);
+          if (typeIndex === -1) return false;
+          
+          // Use case ID to determine if this case matches this document type (for demo purposes)
+          return caseId % DOCUMENT_TYPE_OPTIONS.length === typeIndex % DOCUMENT_TYPE_OPTIONS.length;
+        });
+      });
+    }
+    
+    // Apply Case Outcome filters
+    const caseOutcome = filters.caseOutcome || [];
+    if (caseOutcome.length > 0) {
+      // For demo, use title length to determine outcome
+      filteredCases = filteredCases.filter(c => {
+        // Each case will match with some outcomes based on its title length
+        return caseOutcome.some(outcome => {
+          const outcomeIndex = CASE_OUTCOME_OPTIONS.findIndex(opt => opt.id === outcome);
+          if (outcomeIndex === -1) return false;
+          
+          // Use title length to determine if this case matches this outcome (for demo purposes)
+          return c.title.length % CASE_OUTCOME_OPTIONS.length === outcomeIndex % CASE_OUTCOME_OPTIONS.length;
+        });
+      });
+    }
+    
+    // Apply Parties Involved filters
+    const partiesInvolved = filters.partiesInvolved || [];
+    if (partiesInvolved.length > 0) {
+      // For demo, use case number to determine parties
+      filteredCases = filteredCases.filter(c => {
+        const caseNumSum = c.caseNumber.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
+        
+        return partiesInvolved.some(party => 
+          caseNumSum % 6 === PARTIES_INVOLVED_OPTIONS.findIndex(opt => opt.id === party) % 6
+        );
+      });
+    }
+    
+    // Apply party name search if provided
+    if (filters.partySearch) {
+      const searchTerm = filters.partySearch.toLowerCase();
+      // Filter cases where title or description might contain the party name
+      // In a real implementation, you would search in a dedicated "parties" field
+      filteredCases = filteredCases.filter(c => 
+        c.title.toLowerCase().includes(searchTerm) || 
+        c.description.toLowerCase().includes(searchTerm)
+      );
+    }
+    
+    // Apply Citation Relevance filters
+    const citationRelevance = filters.citationRelevance || [];
+    if (citationRelevance.length > 0) {
+      filteredCases = filteredCases.filter(c => {
+        const citedCount = c.cited || 0;
+        let matchesCitation = false;
+        
+        // Check for threshold filter
+        const thresholdFilter = citationRelevance.find(filter => filter.startsWith('threshold-'));
+        if (thresholdFilter) {
+          const threshold = parseInt(thresholdFilter.split('-')[1]);
+          // Map slider percentage to a reasonable citation count (0-100 -> 0-20 for demo)
+          const citationThreshold = Math.floor(threshold / 5);
+          if (citedCount >= citationThreshold) {
+            matchesCitation = true;
+          }
+        }
+        
+        // Check for most cited
+        if (citationRelevance.includes('most-cited')) {
+          // For demo, consider cases with cited > 5 as "most cited"
+          if (citedCount > 5) {
+            matchesCitation = true;
+          }
+        }
+        
+        // Check for landmark cases
+        if (citationRelevance.includes('landmark-cases')) {
+          // For demo, consider cases with cited > 10 as "landmark"
+          if (citedCount > 10) {
+            matchesCitation = true;
+          }
+        }
+        
+        return matchesCitation;
+      });
+    }
+    
+    // Apply Cross-References filters
+    const crossReferences = filters.crossReferences || [];
+    if (crossReferences.length > 0) {
+      // For demo, consider cases with crossRef > 0 as having cross-references
+      filteredCases = filteredCases.filter(c => {
+        const hasCrossRef = (c.crossRef || 0) > 0;
+        
+        if (crossReferences.includes('yes') && hasCrossRef) return true;
+        if (crossReferences.includes('no') && !hasCrossRef) return true;
+        
+        return false;
+      });
+    }
   }
   
   return {

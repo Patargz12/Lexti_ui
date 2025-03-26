@@ -23,12 +23,17 @@ export interface LegalCase {
 // Search filters type
 export interface SearchFilters {
   caseType: 'Case' | 'Law' | 'All';
-  legalDomain?: string;
-  documentType?: string;
-  caseOutcome?: string;
+  legalDomain?: string[];
+  documentType?: string[];
+  caseOutcome?: string[];
   timePeriod?: string;
-  partiesInvolved?: string;
+  partiesInvolved?: string[];
   keyword?: string;
+  citationRelevance?: string[];
+  crossReferences?: string[];
+  partySearch?: string;
+  searchMode?: 'any' | 'all' | 'exact';
+  advancedOptions?: string[];
 }
 
 // API response types

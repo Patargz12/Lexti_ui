@@ -1,11 +1,54 @@
 import { useTheme } from './ThemeProvider';
 
+
+// Helper function to check theme status
+// const debugTheme = () => {
+//   const html = document.documentElement;
+//   const hasDarkClass = html.classList.contains('dark');
+//   const hasLightClass = html.classList.contains('light');
+//   const storedTheme = localStorage.getItem('theme');
+//   const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  
+//   console.log({
+//     'HTML classList': Array.from(html.classList),
+//     'Has dark class': hasDarkClass, 
+//     'Has light class': hasLightClass,
+//     'localStorage theme': storedTheme,
+//     'System prefers dark': systemPrefersDark,
+//     'Body background': window.getComputedStyle(document.body).backgroundColor
+//   });
+// };
+
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
+  
+
+  
+  // Toggle between light and dark modes
+  const toggleTheme = () => {
+    console.log("Current theme:", theme);
+    
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    console.log("Switching to:", newTheme);
+    
+    // Update theme in localStorage directly too
+    localStorage.setItem('theme', newTheme);
+    
+    // Apply the theme to the document
+    document.documentElement.classList.remove('light', 'dark');
+    document.documentElement.classList.add(newTheme);
+    
+    // Update state
+    setTheme(newTheme);
+    
+    console.log("Applied theme:", newTheme, "Dark class exists:", document.documentElement.classList.contains('dark'));
+    // Run debug after toggle
+    setTimeout(debugTheme, 100);
+  };
 
   return (
     <button
-      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      onClick={toggleTheme}
       className="p-1 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
       aria-label="Toggle theme"
     >

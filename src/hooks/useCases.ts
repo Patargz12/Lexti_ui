@@ -33,7 +33,17 @@ export function useCases(filters?: SearchFilters): UseCasesResult {
 
   useEffect(() => {
     fetchCases();
-  }, [filters?.caseType, filters?.keyword]); // Re-fetch when key filters change
+  }, [
+    filters?.caseType, 
+    filters?.keyword,
+    JSON.stringify(filters?.legalDomain),
+    JSON.stringify(filters?.documentType),
+    JSON.stringify(filters?.caseOutcome),
+    JSON.stringify(filters?.partiesInvolved),
+    JSON.stringify(filters?.citationRelevance),
+    JSON.stringify(filters?.crossReferences),
+    filters?.timePeriod
+  ]);
 
   return { cases, totalResults, isLoading, error, refetch: fetchCases };
 } 

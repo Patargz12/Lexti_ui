@@ -1,0 +1,808 @@
+[
+    {
+      "table_name": "alembic_version",
+      "columns": [
+        {
+          "column_name": "version_num",
+          "data_type": "character varying"
+        }
+      ]
+    },
+    {
+      "table_name": "folders",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "user_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "name",
+          "data_type": "text"
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "timestamp without time zone"
+        },
+        {
+          "column_name": "updated_at",
+          "data_type": "timestamp without time zone"
+        }
+      ]
+    },
+    {
+      "table_name": "bookmarks",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "user_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "law_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "case_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "folder_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "name",
+          "data_type": "text"
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "timestamp without time zone"
+        },
+        {
+          "column_name": "updated_at",
+          "data_type": "timestamp without time zone"
+        }
+      ]
+    },
+    {
+      "table_name": "digests",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "case_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "content",
+          "data_type": "text"
+        },
+        {
+          "column_name": "user_id",
+          "data_type": "bigint"
+        }
+      ]
+    },
+    {
+      "table_name": "dockets",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "case_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "user_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "date_opened",
+          "data_type": "timestamp without time zone"
+        },
+        {
+          "column_name": "law_id",
+          "data_type": "bigint"
+        }
+      ]
+    },
+    {
+      "table_name": "summaries",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "case_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "content",
+          "data_type": "text"
+        },
+        {
+          "column_name": "user_id",
+          "data_type": "bigint"
+        }
+      ]
+    },
+    {
+      "table_name": "users",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "username",
+          "data_type": "character varying"
+        },
+        {
+          "column_name": "email",
+          "data_type": "character varying"
+        },
+        {
+          "column_name": "password_hash",
+          "data_type": "character varying"
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "timestamp without time zone"
+        },
+        {
+          "column_name": "updated_at",
+          "data_type": "timestamp without time zone"
+        }
+      ]
+    },
+    {
+      "table_name": "cases",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "case_number",
+          "data_type": "character varying"
+        },
+        {
+          "column_name": "case_title",
+          "data_type": "character varying"
+        },
+        {
+          "column_name": "decision_date",
+          "data_type": "timestamp without time zone"
+        },
+        {
+          "column_name": "ponente",
+          "data_type": "character varying"
+        },
+        {
+          "column_name": "full_text",
+          "data_type": "text"
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "timestamp without time zone"
+        },
+        {
+          "column_name": "updated_at",
+          "data_type": "timestamp without time zone"
+        }
+      ]
+    },
+    {
+      "table_name": "laws",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "text",
+          "data_type": "text"
+        },
+        {
+          "column_name": "law_title",
+          "data_type": "character varying"
+        },
+        {
+          "column_name": "law_number",
+          "data_type": "character varying"
+        },
+        {
+          "column_name": "code",
+          "data_type": "character varying"
+        },
+        {
+          "column_name": "section",
+          "data_type": "character varying"
+        },
+        {
+          "column_name": "effective_date",
+          "data_type": "date"
+        },
+        {
+          "column_name": "repealed_date",
+          "data_type": "date"
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "timestamp without time zone"
+        },
+        {
+          "column_name": "updated_at",
+          "data_type": "timestamp without time zone"
+        }
+      ]
+    },
+    {
+      "table_name": "search_histories",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "user_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "query",
+          "data_type": "text"
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "timestamp without time zone"
+        }
+      ]
+    },
+    {
+      "table_name": "hypothetical_bar_scenarios",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "case_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "user_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "scenario",
+          "data_type": "text"
+        }
+      ]
+    },
+    {
+      "table_name": "citations",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "law_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "case_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "citation_type",
+          "data_type": "character varying"
+        },
+        {
+          "column_name": "context",
+          "data_type": "text"
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "timestamp without time zone"
+        },
+        {
+          "column_name": "updated_at",
+          "data_type": "timestamp without time zone"
+        }
+      ]
+    },
+    {
+      "table_name": "jurisdictions",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "timestamp without time zone"
+        },
+        {
+          "column_name": "jurisdiction_type",
+          "data_type": "character varying"
+        },
+        {
+          "column_name": "description",
+          "data_type": "text"
+        },
+        {
+          "column_name": "updated_at",
+          "data_type": "timestamp without time zone"
+        }
+      ]
+    },
+    {
+      "table_name": "law_topics",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "law_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "topic_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "timestamp without time zone"
+        }
+      ]
+    },
+    {
+      "table_name": "annotations",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "user_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "law_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "case_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "text",
+          "data_type": "text"
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "timestamp without time zone"
+        },
+        {
+          "column_name": "updated_at",
+          "data_type": "timestamp without time zone"
+        }
+      ]
+    },
+    {
+      "table_name": "case_keywords",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "case_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "keyword_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "timestamp without time zone"
+        }
+      ]
+    },
+    {
+      "table_name": "case_topics",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "case_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "topic_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "timestamp without time zone"
+        }
+      ]
+    },
+    {
+      "table_name": "law_case_association",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "law_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "case_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "timestamp without time zone"
+        }
+      ]
+    },
+    {
+      "table_name": "law_keywords",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "law_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "keyword_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "timestamp without time zone"
+        },
+        {
+          "column_name": "updated_at",
+          "data_type": "timestamp without time zone"
+        }
+      ]
+    },
+    {
+      "table_name": "keywords",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "timestamp without time zone"
+        },
+        {
+          "column_name": "keyword",
+          "data_type": "character varying"
+        }
+      ]
+    },
+    {
+      "table_name": "topics",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "timestamp without time zone"
+        },
+        {
+          "column_name": "topic",
+          "data_type": "character varying"
+        }
+      ]
+    },
+    {
+      "table_name": "research_paths",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "case_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "user_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "research_steps_first_level",
+          "data_type": "jsonb"
+        },
+        {
+          "column_name": "research_steps_second_level",
+          "data_type": "jsonb"
+        }
+      ]
+    },
+    {
+      "table_name": "categories",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "law_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "case_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "category_name",
+          "data_type": "character varying"
+        },
+        {
+          "column_name": "description",
+          "data_type": "text"
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "timestamp without time zone"
+        },
+        {
+          "column_name": "updated_at",
+          "data_type": "timestamp without time zone"
+        }
+      ]
+    },
+    {
+      "table_name": "prompts",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "prompt_name",
+          "data_type": "character varying"
+        },
+        {
+          "column_name": "role",
+          "data_type": "text"
+        },
+        {
+          "column_name": "instructions",
+          "data_type": "text"
+        },
+        {
+          "column_name": "format",
+          "data_type": "text"
+        },
+        {
+          "column_name": "note",
+          "data_type": "text"
+        }
+      ]
+    },
+    {
+      "table_name": "highlights",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "user_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "start_index",
+          "data_type": "integer"
+        },
+        {
+          "column_name": "length",
+          "data_type": "integer"
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "timestamp without time zone"
+        },
+        {
+          "column_name": "updated_at",
+          "data_type": "timestamp without time zone"
+        },
+        {
+          "column_name": "text",
+          "data_type": "text"
+        },
+        {
+          "column_name": "law_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "case_id",
+          "data_type": "bigint"
+        }
+      ]
+    },
+    {
+      "table_name": "recitation_questions",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "case_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "question",
+          "data_type": "text"
+        },
+        {
+          "column_name": "answer",
+          "data_type": "text"
+        },
+        {
+          "column_name": "user_id",
+          "data_type": "bigint"
+        }
+      ]
+    },
+    {
+      "table_name": "timeline_events",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "case_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "event_date",
+          "data_type": "character varying"
+        },
+        {
+          "column_name": "description",
+          "data_type": "text"
+        },
+        {
+          "column_name": "event_name",
+          "data_type": "character varying"
+        },
+        {
+          "column_name": "legal_significance",
+          "data_type": "text"
+        },
+        {
+          "column_name": "key_legal_provisions",
+          "data_type": "text"
+        },
+        {
+          "column_name": "procedural_stage",
+          "data_type": "text"
+        },
+        {
+          "column_name": "user_id",
+          "data_type": "bigint"
+        }
+      ]
+    },
+    {
+      "table_name": "hypothetical_bar_questions",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "question",
+          "data_type": "text"
+        },
+        {
+          "column_name": "answer",
+          "data_type": "text"
+        },
+        {
+          "column_name": "hypothetical_bar_scenario_id",
+          "data_type": "bigint"
+        }
+      ]
+    },
+    {
+      "table_name": "court_jurisdictions_association",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "court_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "jurisdiction_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "timestamp without time zone"
+        },
+        {
+          "column_name": "updated_at",
+          "data_type": "timestamp without time zone"
+        },
+        {
+          "column_name": "case_id",
+          "data_type": "bigint"
+        }
+      ]
+    },
+    {
+      "table_name": "courts",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "name",
+          "data_type": "character varying"
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "timestamp without time zone"
+        },
+        {
+          "column_name": "court_level",
+          "data_type": "character varying"
+        },
+        {
+          "column_name": "court_rank",
+          "data_type": "integer"
+        },
+        {
+          "column_name": "parent_court_id",
+          "data_type": "bigint"
+        },
+        {
+          "column_name": "updated_at",
+          "data_type": "timestamp without time zone"
+        },
+        {
+          "column_name": "location",
+          "data_type": "character varying"
+        }
+      ]
+    }
+  ]

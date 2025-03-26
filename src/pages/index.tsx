@@ -1,6 +1,7 @@
 import { SearchBar } from '@/components/common/SearchBar';
 import { LexibeanBanner } from '@/assets';
 import { Navbar } from '@/components/layout/Navbar';
+import React from 'react';
 
 interface SplashPageProps {
   activeLink: string;
